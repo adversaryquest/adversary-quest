@@ -1,0 +1,43 @@
+From 132df3308431eae3f057eae11cf85b73cb038577 Mon Sep 17 00:00:00 2001
+From: Your Name <you@example.com>
+Date: Wed, 9 Dec 2020 14:30:59 +0000
+Subject: [PATCH 2/2] Add penguins
+
+---
+ examples/mapviewer.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/examples/mapviewer.c b/examples/mapviewer.c
+index 22dd0f0..2bcf496 100644
+--- a/examples/mapviewer.c
++++ b/examples/mapviewer.c
+@@ -306,10 +306,10 @@ main (int argc, char **argv)
+     osm_gps_map_set_keyboard_shortcut(map, OSM_GPS_MAP_KEY_RIGHT, GDK_KEY_Right);
+ 
+     //Build the UI
+-    g_star_image = gdk_pixbuf_new_from_file_at_size ("poi.png", 24,24,NULL);
++    g_star_image = gdk_pixbuf_new_from_file_at_size ("/usr/local/share/mapviewer/poi.svg", 72, 64, NULL);
+ 
+     builder = gtk_builder_new();
+-    gtk_builder_add_from_file (builder, "mapviewer.ui", &error);
++    gtk_builder_add_from_file (builder, "/usr/local/share/mapviewer/mapviewer.ui", &error);
+     if (error)
+         g_error ("ERROR: %s\n", error->message);
+ 
+@@ -396,6 +396,13 @@ main (int argc, char **argv)
+     gtk_widget_show_all (widget);
+ 
+     g_log_set_handler ("OsmGpsMap", G_LOG_LEVEL_MASK, g_log_default_handler, NULL);
++
++    osm_gps_map_image_add(map, -74.784332, 71.954956, g_star_image);
++    osm_gps_map_image_add(map, -79.059052, -163.277435, g_star_image);
++    osm_gps_map_image_add(map, -76.307762, 161.130981, g_star_image);
++    osm_gps_map_image_add(map, -78.877472, -24.400635, g_star_image);
++    osm_gps_map_image_add(map, -54.421132, 3.348348, g_star_image);
++
+     gtk_main ();
+ 
+     return 0;
+-- 
+2.25.1
+

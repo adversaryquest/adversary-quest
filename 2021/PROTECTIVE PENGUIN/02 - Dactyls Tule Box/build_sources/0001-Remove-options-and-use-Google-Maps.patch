@@ -1,0 +1,59 @@
+From e889de2316368e8fd37b14c6d9310b0f943ba96c Mon Sep 17 00:00:00 2001
+From: Your Name <you@example.com>
+Date: Thu, 10 Dec 2020 11:23:58 +0000
+Subject: [PATCH 1/2] Remove options and use Google Maps
+
+---
+ examples/mapviewer.c | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
+
+diff --git a/examples/mapviewer.c b/examples/mapviewer.c
+index bbe4272..22dd0f0 100644
+--- a/examples/mapviewer.c
++++ b/examples/mapviewer.c
+@@ -25,19 +25,12 @@
+ 
+ #include "osm-gps-map.h"
+ 
+-static OsmGpsMapSource_t opt_map_provider = OSM_GPS_MAP_SOURCE_OPENSTREETMAP;
+-static gboolean opt_friendly_cache = FALSE;
++static OsmGpsMapSource_t opt_map_provider = OSM_GPS_MAP_SOURCE_GOOGLE_STREET;
+ static gboolean opt_no_cache = FALSE;
+-static gboolean opt_debug = FALSE;
+-static char *opt_cache_base_dir = NULL;
+ static gboolean opt_editable_tracks = FALSE;
+ static GOptionEntry entries[] =
+ {
+-  { "friendly-cache", 'f', 0, G_OPTION_ARG_NONE, &opt_friendly_cache, "Store maps using friendly cache style (source name)", NULL },
+   { "no-cache", 'n', 0, G_OPTION_ARG_NONE, &opt_no_cache, "Disable cache", NULL },
+-  { "cache-basedir", 'b', 0, G_OPTION_ARG_FILENAME, &opt_cache_base_dir, "Cache basedir", NULL },
+-  { "debug", 'd', 0, G_OPTION_ARG_NONE, &opt_debug, "Enable debugging", NULL },
+-  { "map", 'm', 0, G_OPTION_ARG_INT, &opt_map_provider, "Map source", "N" },
+   { "editable-tracks", 'e', 0, G_OPTION_ARG_NONE, &opt_editable_tracks, "Make the tracks editable", NULL },
+   { NULL }
+ };
+@@ -266,20 +259,12 @@ main (int argc, char **argv)
+ 
+     cachebasedir = osm_gps_map_get_default_cache_directory();
+ 
+-    if (opt_cache_base_dir && g_file_test(opt_cache_base_dir, G_FILE_TEST_IS_DIR)) {
+-        cachedir = g_strdup(OSM_GPS_MAP_CACHE_AUTO);
+-        cachebasedir = g_strdup(opt_cache_base_dir);
+-    } else if (opt_friendly_cache) {
+-        cachedir = g_strdup(OSM_GPS_MAP_CACHE_FRIENDLY);
+-    } else if (opt_no_cache) {
++    if (opt_no_cache) {
+         cachedir = g_strdup(OSM_GPS_MAP_CACHE_DISABLED);
+     } else {
+         cachedir = g_strdup(OSM_GPS_MAP_CACHE_AUTO);
+     }
+ 
+-    if (opt_debug)
+-        gdk_window_set_debug_updates(TRUE);
+-
+     g_debug("Map Cache Dir: %s", cachedir);
+     g_debug("Map Provider: %s (%d)", osm_gps_map_source_get_friendly_name(opt_map_provider), opt_map_provider);
+ 
+-- 
+2.25.1
+
